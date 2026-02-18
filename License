@@ -1,0 +1,63 @@
+ANTIKYTHERA PROJECT — PROPRIETARY LICENSE
+
+Copyright (c) 2026. All rights reserved.
+
+This repository and all contents therein — including but not limited to
+source code, documentation, methodology specifications, configuration
+files, data schemas, and architectural descriptions — are the exclusive
+proprietary property of the copyright holder.
+
+GRANT OF RIGHTS
+
+No rights are granted by this license. Publication of this repository
+constitutes disclosure for the purpose of establishing prior art and
+does not constitute a grant of any license, right, or permission to
+any third party.
+
+RESTRICTIONS
+
+You may not, without express written permission from the copyright holder:
+
+  1. Use, execute, or deploy this software or any portion thereof for
+     any purpose, commercial or non-commercial.
+
+  2. Copy, reproduce, or distribute this software or any portion thereof
+     in any form or by any means.
+
+  3. Modify, adapt, translate, reverse engineer, decompile, disassemble,
+     or create derivative works based on this software or any portion
+     thereof.
+
+  4. Sublicense, sell, rent, lease, transfer, or otherwise convey any
+     rights in this software to any third party.
+
+  5. Use the methodology, architecture, or protocol specifications
+     described herein — including the MinK review protocol, the
+     three-measure similarity pipeline, and the Abulafia alignment
+     workflow — to implement a functionally equivalent system without
+     express written permission.
+
+PRIOR ART NOTICE
+
+Public availability of this repository is intended solely to establish
+a date of prior art for the methods, systems, and protocols described
+herein. Viewing this repository does not constitute a license to
+practice any of the disclosed methods.
+
+TRADE SECRETS
+
+Portions of the implementation, including preprocessing rules, corpus
+preparation procedures, and threshold calibration data, are maintained
+as trade secrets and are not disclosed in this repository. Publication
+of skeleton interfaces does not constitute disclosure of those trade
+secrets.
+
+NO WARRANTY
+
+This software is provided "as is" without warranty of any kind, express
+or implied.
+
+CONTACT
+
+For institutional licensing inquiries, collaboration, or permissions:
+Joshua Hayes joshua.hayes.info@gmail.com
