@@ -1,0 +1,17 @@
+# Abulafia — Standards Alignment for Legacy Degree Programs
+# Part of the Antikythera project tree.
+#
+# Install: pip install -r requirements.txt
+# Python >= 3.10 required.
+
+sentence-transformers>=2.2.0   # SBERT embeddings (all-mpnet-base-v2)
+scikit-learn>=1.3.0            # TF-IDF vectorization, cosine similarity
+pandas>=2.0.0                  # Data manipulation and CSV I/O
+numpy>=1.24.0                  # Numerical operations, embedding matrices
+openpyxl>=3.1.0                # WECM xlsx parsing; Excel report generation
+pdfplumber>=0.10.0             # ACGM PDF parsing
+torch>=2.0.0                   # Transformer backend
+nltk>=3.8.0                    # Tokenization, Porter stemmer,
+                               # WordNetLemmatizer, POS tagging,
+                               # WordNet synsets, stop words
+python-dotenv>=1.0.0           # Environment and configuration management
