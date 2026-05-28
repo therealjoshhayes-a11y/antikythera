@@ -43,7 +43,7 @@ accreditors and curriculum committees.
 Frameworks aligned to date: USCG · NCCER · BCSP · NAPTA · SACA · DOT
 
 See /abulafia for code and /abulafia/05_documentation for the 
-technical manual.
+technical manual and research supplement.
 
 ---
 
