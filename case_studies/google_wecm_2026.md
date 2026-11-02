@@ -64,6 +64,6 @@ The conference deck provides the public-facing explanation of the Google IT Supp
 - Course and program changes, prior-learning credit, occupational awards, financial-aid eligibility, and accreditation questions require separate institutional and regulatory review.
 - This study is distinct from the later Abulafia code tree. The public Abulafia matching and export modules contain unfinished interfaces and are not an end-to-end reproduction of the March run.
 
-For the broader methodology, review the [Antikythera overview](../README.md) and [Abulafia documentation](../abulafia/README.md).
+For the broader methodology, review the [Antikythera overview](../README.md) and [Abulafia documentation](../abulafia/readme.md).
 
 **Availability and permissions:** See the repository [License](../License). For an academic demonstration, collaboration, or access to additional artifacts, contact Joshua Hayes at **joshua.hayes.info@gmail.com**.
