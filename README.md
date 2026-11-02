@@ -11,7 +11,7 @@ Antikythera is an applied research-and-development project for identifying plaus
 | Resource | What it shows | Status |
 | --- | --- | --- |
 | [Google × WECM case study](case_studies/google_wecm_2026.md) | March 2026 completed run, **35,113** candidate comparisons, example Google IT Support mappings, and recorded outputs | Analytical work completed; mappings exploratory |
-| [Abulafia overview](abulafia/README.md) | Standards-alignment workflow for existing degree programs, available parsers, documentation, and implementation limits | Research/development |
+| [Abulafia overview](abulafia/readme.md) | Standards-alignment workflow for existing degree programs, available parsers, documentation, and implementation limits | Research/development |
 | [MinK technical documentation](abulafia/05_documentation/Abulafia_MinK_Technical_Documentation_v3.2.docx.pdf) | Human subject-matter-expert (SME) review design, acceptance protocol, and intended audit trail | Protocol documented |
 | [Research white paper](abulafia/05_documentation/Curriculum_Alignment_White_Paper.docx) | Supporting research and rationale for academic alignment work | Research document |
 | [Source and parser code](abulafia/06_code/) | ACGM/WECM and target-standard extraction, data preparation, matching interfaces, export interfaces | Mixed implementation maturity |
