@@ -1,59 +1,50 @@
 # Antikythera
 
-Tools for the ethical application of machine learning 
-in higher education credentialing.
+**Semantic curriculum alignment for higher education and industry credentials**
 
----
+Antikythera is an applied research-and-development project for identifying plausible relationships among college courses, student learning outcomes, industry certifications, and professional standards. It uses computational ranking to help qualified academic reviewers focus their attention; it does **not** automate credit decisions.
 
-## What this is
+> **Project status — active work in progress.** Completed analytical work products exist, including a March 2026 comparison of six Google credential groupings with the Texas Workforce Education Course Manual (WECM). This public repository also contains authored parsers, source provenance, technical documentation, and an evolving Abulafia alignment architecture. Some matching, preprocessing, and export modules remain intentionally incomplete. Do not treat the whole repository as an install-and-run application.
 
-Antikythera is a collection of tools that apply machine learning 
-to credentialing problems in higher education, without replacing 
-human judgment in decisions that require it.
+## Start here
 
-Each project in this repository addresses a specific alignment 
-problem. All projects use the MinK review protocol.
+| Resource | What it shows | Status |
+| --- | --- | --- |
+| [Google × WECM case study](case_studies/google_wecm_2026.md) | March 2026 completed run, **35,113** candidate comparisons, example Google IT Support mappings, and recorded outputs | Analytical work completed; mappings exploratory |
+| [Abulafia overview](abulafia/README.md) | Standards-alignment workflow for existing degree programs, available parsers, documentation, and implementation limits | Research/development |
+| [MinK technical documentation](abulafia/05_documentation/Abulafia_MinK_Technical_Documentation_v3.2.docx.pdf) | Human subject-matter-expert (SME) review design, acceptance protocol, and intended audit trail | Protocol documented |
+| [Research white paper](abulafia/05_documentation/Curriculum_Alignment_White_Paper.docx) | Supporting research and rationale for academic alignment work | Research document |
+| [Source and parser code](abulafia/06_code/) | ACGM/WECM and target-standard extraction, data preparation, matching interfaces, export interfaces | Mixed implementation maturity |
 
----
+### Demonstrated Google credential analysis
 
-## MinK
+A run completed on **March 11, 2026**, compared **37 course units** across **six Google credential groupings** with **949 WECM course records**, producing **35,113 pairwise comparisons**. The analysis used `all-mpnet-base-v2` sentence embeddings and complementary TF-IDF and Jaccard checks. It included exploratory instructional-content placement for the Google IT Support Professional Certificate.
 
-MinK (Minimum K) is the SME review protocol used across all 
-Antikythera projects.
+The work was presented at a **statewide TACTE conference in March 2026**. The full output CSVs and run manifest are retained separately and are **not included in this public repository**. See the [case study](case_studies/google_wecm_2026.md) for the run identity, illustrative findings, limitations, and artifact inventory.
 
-The operator sets K (queue depth per similarity measure) and 
-acceptance_target (accepted pairs before the session ends). A 
-three-person panel votes Accept or Not Accept on ranked pairs. 
-When acceptance_target is reached, the session terminates.
+**That completed analysis is not the same as a finished public end-to-end software package, and the candidate matches are not approved credit equivalencies.**
 
-The algorithm ranks. The panel decides.
+## Abulafia: standards alignment for existing programs
 
----
+Abulafia explores how existing Texas college course outcomes may align with external technical, occupational, and professional standards, using a documented review process rather than a fixed cosine-similarity cutoff. Frameworks represented in the research scope include **USCG, NCCER, BCSP, NAPTA, SACA, and DOT**; listing a framework does not imply an institutionally approved crosswalk.
 
-## Projects
+The repository contains dated Texas ACGM/WECM source materials, NCCER standard inputs, provenance notes, several substantive parser and corpus-building scripts, and detailed design documentation. The current `02_matching_pipeline.py`, `01_preprocessing.py`, and `03_export_results.py` files contain declared functions with `NotImplementedError` placeholders. They define the intended interfaces; they do not establish that this public code can reproduce the completed March Google analysis.
 
-### Abulafia
-Standards alignment for legacy degree programs.
+## Human review: MinK
 
-Maps Student Learning Outcomes from existing Texas community college 
-degree programs to external industry certifications and professional 
-licensure frameworks. Produces a defensible, auditable crosswalk for 
-accreditors and curriculum committees.
+**MinK (Minimum K)** is the documented SME-review protocol for future or continuing alignment work. An operator specifies a queue depth `K` per comparison method and an `acceptance_target`. The proposed process presents ranked course/standard candidates to a **three-person reviewer panel**, records **Accept / Not Accept** judgments, and ends when its acceptance condition is met.
 
-Frameworks aligned to date: USCG · NCCER · BCSP · NAPTA · SACA · DOT
+MinK describes how academic judgment should govern the output; it is **not** evidence that the March Google demonstration was reviewed or approved by a three-person faculty panel.
 
-See /abulafia for code and /abulafia/05_documentation for the 
-technical manual and research supplement.
+## What this project does—and does not—claim
 
----
+- **Does:** produce or specify auditable candidate rankings; preserve the distinction among semantic similarity, instructional content placement, academic equivalence, and institutional approval.
+- **Does:** document actual research outputs alongside partial public implementations and proprietary methods.
+- **Does not:** issue credits, approve curricula, make accreditation or financial-aid determinations, or claim that similarity scores are acceptance thresholds.
+- **Does not:** represent the entire public code tree as production ready or fully reproducible without separately retained artifacts and unpublished implementation details.
 
-## What these tools do not do
+## License and contact
 
-Antikythera tools do not make credentialing decisions. They rank 
-candidates and record what a qualified human panel decided.
+The repository is publicly viewable but **proprietary and not open-source licensed**. See [License](License) for permissions and restrictions.
 
----
-
-## License
-
-Proprietary. Contact [you] for institutional licensing.
+For demonstrations, academic collaboration, or permissions: **Joshua Hayes — joshua.hayes.info@gmail.com**.
