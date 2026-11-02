@@ -1,6 +1,6 @@
 Source: Texas Higher Education Coordinating Board (THECB)
 URL: https://www.txhighereddata.org/institution-overviews/course-and-program-inventories/acgm/
 Retrieved: 2026-02-18
-Retrieved by: [your name]
+Retrieved by: Not recorded in original source note
 File saved as: acgm_corpus_20260218.pdf
 Notes: Bulk .pdf export; Error exporting as .xlsx or .csv.
