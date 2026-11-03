@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Antikythera — SME Walk-down Demonstration</title>
+  <style>
+    :root { color-scheme: light; font: 16px/1.48 system-ui, -apple-system, Segoe UI, sans-serif; background:#f4f6fa; color:#182338; }
+    * { box-sizing: border-box; }
+    body { margin:0; }
+    main { max-width:940px; margin:40px auto; padding:0 18px 45px; }
+    h1 { margin:.2rem 0 .4rem; font-size:clamp(1.5rem,3vw,2.2rem); }
+    h2 { font-size:1.1rem; margin:0 0 1rem; }
+    p { margin:.4rem 0 .85rem; }
+    .muted { color:#586477; } .eyebrow { color:#31579a; font-size:.78rem; font-weight:700; letter-spacing:.075em; text-transform:uppercase; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:24px 0; }
+    .metric, section, details { border:1px solid #dce2eb; background:#fff; border-radius:13px; padding:18px; box-shadow:0 2px 8px #192a4410; }
+    .metric .num { display:block; font-size:1.95rem; font-weight:750; font-variant-numeric:tabular-nums; }
+    .metric .caption { font-size:.83rem; color:#607086; }
+    .layout { display:grid; grid-template-columns:1.2fr .8fr; gap:14px; align-items:start; }
+    .pair { border-left:4px solid #4164a8; padding-left:14px; margin:12px 0 18px; }
+    .pair h3 { margin:.25rem 0 .7rem; font-size:1rem; }
+    .small { font-size:.84rem; } .tag { display:inline-block; font-size:.8rem; color:#244884; background:#eaf0fb; padding:4px 9px; border-radius:8px; margin-right:6px; }
+    fieldset { border:1px solid #dce2eb; border-radius:10px; margin:10px 0; padding:9px 12px; }
+    legend { font-weight:650; font-size:.89rem; padding:0 5px; }
+    label { margin-right:16px; cursor:pointer; }
+    input[type=radio] { accent-color:#315aa7; }
+    button { appearance:none; border:1px solid #cbd4e3; border-radius:9px; padding:10px 14px; background:white; font:inherit; font-weight:650; color:#203453; cursor:pointer; }
+    button:hover:not(:disabled) { background:#eef2f9; } button:disabled { opacity:.5; cursor:not-allowed; }
+    button.primary { background:#315aa7; border-color:#315aa7; color:white; }
+    button.primary:hover:not(:disabled) { background:#234780; }
+    .buttons { display:flex; gap:8px; flex-wrap:wrap; margin-top:13px; }
+    .notice { margin-top:12px; color:#9a2f2f; min-height:22px; }
+    .status { padding:12px 14px; background:#f1f5fb; border-radius:9px; font-weight:650; }
+    .status.finished { color:#205b36; background:#e8f6ed; }
+    ol { padding-left:23px; margin:10px 0; } li { padding:6px 0; border-bottom:1px solid #edf0f4; font-size:.88rem; }
+    li:last-child { border-bottom:0; }
+    .log { max-height:360px; overflow:auto; }
+    details { margin-top:14px; } summary { cursor:pointer; font-weight:650; }
+    footer { color:#586477; font-size:.8rem; margin-top:18px; }
+    @media(max-width:720px) { .layout { grid-template-columns:1fr; } main { margin:20px auto; } .grid { gap:6px; } .metric { padding:12px; } .metric .num { font-size:1.6rem; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Antikythera / MinK / illustrative demo</div>
+    <h1>SME walk-down</h1>
+    <p class="muted">Three independent ranking lists. Three subject-matter experts. Stop after <strong>3 accepted</strong> or <strong>4 rejected</strong> panel decisions—whichever comes first.</p>
+    <p class="small muted"><strong>Reconstructed demonstration, not the original historical module.</strong> All course/standard texts and scores below are synthetic. No credit decision or faculty validation is implied.</p>
+  </header>
+
+  <div class="grid" aria-label="Session counts">
+    <div class="metric"><span id="accepts" class="num">0 / 3</span><span class="caption">Accepted panel decisions</span></div>
+    <div class="metric"><span id="rejects" class="num">0 / 4</span><span class="caption">Rejected panel decisions</span></div>
+    <div class="metric"><span id="reviewed" class="num">0</span><span class="caption">Distinct candidate pairs reviewed</span></div>
+  </div>
+
+  <div class="layout">
+    <section>
+      <h2>Current candidate</h2>
+      <div id="status" class="status" aria-live="polite">Review open</div>
+      <div id="candidate">
+        <p><span class="tag" id="measure"></span><span class="tag" id="rank"></span></p>
+        <div class="pair">
+          <h3 id="course-label"></h3>
+          <p id="course-text"></p>
+          <h3 id="standard-label"></h3>
+          <p id="standard-text"></p>
+        </div>
+        <p class="small muted" id="score"></p>
+      </div>
+
+      <form id="vote-form">
+        <h2>Panel votes</h2>
+        <p class="small muted">All three SMEs vote. Two of three determines the panel decision.</p>
+        <div id="voters"></div>
+        <div class="buttons">
+          <button class="primary" type="submit" id="record">Record majority decision</button>
+          <button type="button" id="reset">Reset session</button>
+          <button type="button" id="export">Export review log (JSON)</button>
+        </div>
+        <div id="message" class="notice" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section>
+      <h2>Review trail</h2>
+      <p class="small muted">On ACCEPT, continue within the same ranked list. On REJECT, rotate SBERT → TF-IDF → Jaccard → SBERT. Already-reviewed pairs are skipped.</p>
+      <div class="log"><ol id="trail"><li>No decisions recorded yet.</li></ol></div>
+    </section>
+  </div>
+
+  <details>
+    <summary>Scope and rule definitions</summary>
+    <p><strong>Acceptance exit:</strong> After 3 panel ACCEPT decisions, finish immediately.</p>
+    <p><strong>Rejection exit:</strong> After 4 panel REJECT decisions, finish immediately. This is a decision-count rule, <em>not</em> a minimum cosine-similarity score.</p>
+    <p><strong>Queue exhaustion:</strong> If there are no unreviewed candidates left in any measure, finish and record that outcome.</p>
+    <p><strong>Ranking:</strong> The three measures remain independent; scores are shown as context only and are never averaged or used as an acceptance threshold. This small offline demo does not compute embeddings or parse catalogs.</p>
+    <p><strong>Provenance:</strong> Demonstrates the user-reported 3-accept / 4-rejection module behavior. It is separate from the currently published MinK v3.2 specification, which uses a configurable acceptance target and does not describe a rejection-count exit. This demonstration does not establish institutional approval.</p>
+  </details>
+
+  <footer>Antikythera — illustrative SME review walkthrough · Standalone HTML · No installation or network required · See repository License for usage permissions.</footer>
+</main>
+<script>
+"use strict";
+
+// Completely synthetic examples. Each measure ranks potential course-to-standard
+// pairs independently. Same IDs across measures demonstrate duplicate suppression.
+const candidates = {
+  "SBERT": [
+    { id:"p1", course:"COURSE 101", outcome:"Diagnose a common equipment failure and document corrective action.", standard:"STANDARD A", requirement:"Apply structured troubleshooting procedures to technical equipment.", score:0.81 },
+    { id:"p2", course:"COURSE 105", outcome:"Prepare a maintenance and safety checklist for a worksite.", standard:"STANDARD B", requirement:"Verify safe operating conditions before a technical task.", score:0.76 },
+    { id:"p3", course:"COURSE 113", outcome:"Explain an inventory-management process for shared equipment.", standard:"STANDARD C", requirement:"Maintain traceable material records for project operations.", score:0.69 },
+    { id:"p4", course:"COURSE 117", outcome:"Communicate handoff requirements during a supervised project.", standard:"STANDARD D", requirement:"Complete a technical handover with documented responsibility.", score:0.64 },
+    { id:"p5", course:"COURSE 121", outcome:"Summarize the history of a technical profession.", standard:"STANDARD E", requirement:"Operate a sensor and identify out-of-tolerance conditions.", score:0.53 }
+  ],
+  "TF-IDF": [
+    { id:"p2", course:"COURSE 105", outcome:"Prepare a maintenance and safety checklist for a worksite.", standard:"STANDARD B", requirement:"Verify safe operating conditions before a technical task.", score:0.72 },
+    { id:"p6", course:"COURSE 125", outcome:"Inspect system components using a written maintenance checklist.", standard:"STANDARD F", requirement:"Perform a documented system inspection.", score:0.68 },
+    { id:"p7", course:"COURSE 129", outcome:"Track tooling inventory using a standard form.", standard:"STANDARD G", requirement:"Record consumable materials and tools.", score:0.61 },
+    { id:"p8", course:"COURSE 133", outcome:"Create a weekly team status report.", standard:"STANDARD H", requirement:"Report operational metrics to a supervisor.", score:0.57 },
+    { id:"p9", course:"COURSE 137", outcome:"Identify common workflow obstacles.", standard:"STANDARD I", requirement:"Perform an integrated process-quality audit.", score:0.52 }
+  ],
+  "Jaccard": [
+    { id:"p1", course:"COURSE 101", outcome:"Diagnose a common equipment failure and document corrective action.", standard:"STANDARD A", requirement:"Apply structured troubleshooting procedures to technical equipment.", score:0.46 },
+    { id:"p10", course:"COURSE 141", outcome:"Identify emergency shutdown procedures.", standard:"STANDARD J", requirement:"Describe shutdown controls and emergency responses.", score:0.39 },
+    { id:"p11", course:"COURSE 145", outcome:"Record quality inspection results in a worksheet.", standard:"STANDARD K", requirement:"Produce reliable technical inspection records.", score:0.32 },
+    { id:"p12", course:"COURSE 149", outcome:"Outline communication roles in a service team.", standard:"STANDARD L", requirement:"Demonstrate shared accountability in technical operations.", score:0.27 },
+    { id:"p13", course:"COURSE 153", outcome:"Identify industry terminology for a technical field.", standard:"STANDARD M", requirement:"Perform a supervised field measurement.", score:0.21 }
+  ]
+};
+const measures = ["SBERT", "TF-IDF", "Jaccard"];
+const targetAccepts = 3;
+const maxRejects = 4;
+const el = id => document.getElementById(id);
+let index, active, accepted, rejected, history, finished;
+
+function initialize() {
+  index = [0,0,0]; active = 0; accepted = 0; rejected = 0; history = []; finished = "";
+  el("message").textContent = "";
+  render();
+}
+
+function nextCandidate() {
+  // Find next available unique candidate from current measure, rotating if
+  // the selected list has been exhausted. No candidate is voted on twice.
+  const seen = new Set(history.map(x => x.id));
+  let checked = 0;
+  while (checked < measures.length) {
+    const list = candidates[measures[active]];
+    while (index[active] < list.length && seen.has(list[index[active]].id)) index[active]++;
+    if (index[active] < list.length) {
+      return { item: list[index[active]], measure: measures[active], rank: index[active]+1 };
+    }
+    active = (active + 1) % measures.length;
+    checked++;
+  }
+  return null;
+}
+
+function drawVoters() {
+  const area = el("voters");
+  area.replaceChildren();
+  for (let i=1; i<=3; i++) {
+    const group = document.createElement("fieldset");
+    const legend = document.createElement("legend");
+    legend.textContent = "SME " + i;
+    group.appendChild(legend);
+    for (const v of ["ACCEPT", "REJECT"]) {
+      const label = document.createElement("label");
+      const radio = document.createElement("input");
+      radio.type = "radio"; radio.name = "sme" + i; radio.value = v;
+      radio.disabled = !!finished;
+      label.append(radio, document.createTextNode(" " + v));
+      group.appendChild(label);
+    }
+    area.appendChild(group);
+  }
+}
+
+function render() {
+  const next = !finished ? nextCandidate() : null;
+  if (!finished && !next) finished = "Queue exhausted — no unreviewed candidates remain.";
+  el("accepts").textContent = accepted + " / " + targetAccepts;
+  el("rejects").textContent = rejected + " / " + maxRejects;
+  el("reviewed").textContent = String(history.length);
+  el("status").textContent = finished || "Review open — rank order within each measure";
+  el("status").classList.toggle("finished", !!finished);
+  el("candidate").hidden = !!finished;
+  el("record").disabled = !!finished;
+  if (next && !finished) {
+    el("measure").textContent = next.measure;
+    el("rank").textContent = "Rank " + next.rank;
+    el("course-label").textContent = next.item.course + " — learning outcome";
+    el("course-text").textContent = next.item.outcome;
+    el("standard-label").textContent = next.item.standard + " — competency";
+    el("standard-text").textContent = next.item.requirement;
+    el("score").textContent = next.measure + " similarity: " + next.item.score.toFixed(2) + " (ranking information, not an approval threshold)";
+  }
+  drawVoters();
+  const trail = el("trail");
+  trail.replaceChildren();
+  if (!history.length) {
+    const li=document.createElement("li"); li.textContent="No decisions recorded yet."; trail.appendChild(li);
+  } else {
+    for (const h of history) {
+      const li=document.createElement("li");
+      li.textContent = h.measure + " #" + h.rank + " · " + h.course + " / " + h.standard + " — " + h.decision + " (" + h.votes.join(", ") + ")";
+      trail.appendChild(li);
+    }
+  }
+}
+
+el("vote-form").addEventListener("submit", function(event) {
+  event.preventDefault();
+  if (finished) return;
+  const next = nextCandidate();
+  if (!next) { render(); return; }
+  const votes = [1,2,3].map(i => {
+    const selected=document.querySelector('input[name="sme' + i + '"]:checked');
+    return selected ? selected.value : "";
+  });
+  if (votes.some(v => !v)) {
+    el("message").textContent = "Record all three SME votes before continuing.";
+    return;
+  }
+  const positive = votes.filter(v => v === "ACCEPT").length;
+  const decision = positive >= 2 ? "ACCEPT" : "REJECT";
+  history.push({
+    id:next.item.id, course:next.item.course, standard:next.item.standard,
+    measure:next.measure, rank:next.rank, score:next.item.score,
+    votes:votes, decision:decision, at:new Date().toISOString()
+  });
+  index[active]++;
+  if (decision === "ACCEPT") {
+    accepted++;
+    if (accepted >= targetAccepts) finished="Exit: 3 ACCEPT decisions recorded.";
+  } else {
+    rejected++;
+    if (rejected >= maxRejects) finished="Exit: 4 REJECT decisions recorded.";
+    active=(active+1)%measures.length;
+  }
+  el("message").textContent = "";
+  render();
+});
+el("reset").addEventListener("click", initialize);
+el("export").addEventListener("click", function() {
+  const record={
+    demo:true, synthetic_data:true, reconstruction:true,
+    rules:{accept_exit:targetAccepts,reject_exit:maxRejects,majority:"2 of 3"},
+    accepted:accepted,rejected:rejected,stopping_condition:finished || "Session still open",
+    decisions:history
+  };
+  const blob=new Blob([JSON.stringify(record,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="sme_walkdown_demo_log.json";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+});
+initialize();
+</script>
+</body>
+</html>
