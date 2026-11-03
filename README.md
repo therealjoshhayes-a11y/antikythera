@@ -11,7 +11,7 @@ Antikythera is an applied research-and-development project for identifying plaus
 | Resource | What it shows | Status |
 | --- | --- | --- |
 | [Google × WECM case study](case_studies/google_wecm_2026.md) | March 2026 completed run, **35,113** candidate comparisons, example Google IT Support mappings, and recorded outputs | Analytical work completed; mappings exploratory |
-| [SME walk-down HTML demo](demos/sme_walkdown.html) | Standalone interactive three-reviewer vote walkthrough; exits at **3 accepts** or **4 rejections**; independent SBERT / TF-IDF / Jaccard ranked lists | Reconstructed demonstration with synthetic data; not a historical result |
+| [Single-SME SLO walk-down HTML demo](demos/sme_walkdown.html) | One target course SLO, a ranked list of candidate training modules, single-reviewer Accept/Reject decisions; exits at **3 accepted modules** or **4 consecutive rejected modules** | Reconstructed demonstration with synthetic data; not a historical result |
 | [Abulafia overview](abulafia/readme.md) | Standards-alignment workflow for existing degree programs, available parsers, documentation, and implementation limits | Research/development |
 | [MinK technical documentation](abulafia/05_documentation/Abulafia_MinK_Technical_Documentation_v3.2.docx.pdf) | Human subject-matter-expert (SME) review design, acceptance protocol, and intended audit trail | Protocol documented |
 | [Research white paper](abulafia/05_documentation/Curriculum_Alignment_White_Paper.docx) | Supporting research and rationale for academic alignment work | Research document |
@@ -37,7 +37,7 @@ The repository contains dated Texas ACGM/WECM source materials, NCCER standard i
 
 MinK describes how academic judgment should govern the output; it is **not** evidence that the March Google demonstration was reviewed or approved by a three-person faculty panel.
 
-A separate [standalone SME walk-down demonstration](demos/sme_walkdown.html) illustrates a user-reported review variant that exits on **3 panel accepts or 4 panel rejections**. The demo uses synthetic ranked pairs, requires votes from all three SMEs, and records a majority outcome; it is **not** an implementation of the historical module or proof of a completed faculty review. The 4-rejection exit is distinct from the published MinK v3.2 protocol.
+A separate [single-SME SLO-to-module walk-down demonstration](demos/sme_walkdown.html) illustrates an exploratory review-efficiency heuristic: one SME holds a target **course SLO** fixed, reviews its matched external **modules** in ranked order, and marks each ACCEPT or REJECT. Review stops at **three accepted modules in total**, or **four consecutive module rejections** (with the rejection streak resetting after an acceptance), whichever occurs first. A search termination is **not** a negative equivalency decision; all remaining candidates are explicitly *not reviewed*. The demo uses synthetic material, is a reconstruction rather than the original historical module, and does not establish approved coverage or completed faculty validation. This single-SME variant is distinct from the documented three-person MinK v3.2 protocol.
 
 ## What this project does—and does not—claim
 
